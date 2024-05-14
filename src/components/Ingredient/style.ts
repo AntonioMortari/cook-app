@@ -1,17 +1,24 @@
-import { theme } from '@/src/theme';
+import { theme } from '@/theme';
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-    container:{
+    container: {
         borderWidth: 2,
         borderColor: theme.colors.gray_200,
-        borderRadius: 16,
+        borderRadius: theme.borderRadius.full,
         paddingHorizontal: 16,
         height: 42,
+        width: 90,
+        marginBottom: 15,
+        marginRight: 6,
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'row',
         gap: 6
+    },
+    containerSelected:{
+        backgroundColor: theme.colors.green_100,
+        borderColor: theme.colors.green_600
     }
 });
 

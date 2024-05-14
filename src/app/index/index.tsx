@@ -1,6 +1,6 @@
-import { Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import { styles } from './style'
-import { Ingredient } from '@/src/components/Ingredient';
+import { Ingredient } from '@/components/Ingredient';
 
 const App = () => {
     return (
@@ -12,9 +12,18 @@ const App = () => {
 
             <Text style={styles.message}>Descubra receitas baseadas nos produtos que você escolheu.</Text>
 
-            <Ingredient name='Maçã' />
-            <Ingredient name='Queijo' />
-            <Ingredient name='Uva' />
+            <ScrollView
+                contentContainerStyle={styles.containerIngredients}
+            >
+                <View style={styles.containerIngredients}>
+                    {Array.from({ length: 100 }).map((item, index) => {
+                        return (
+                            <Ingredient key={index} name='Macã' />
+                        )
+                    })}
+
+                </View>
+            </ScrollView>
         </View>
     );
 }

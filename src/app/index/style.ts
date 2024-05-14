@@ -1,10 +1,10 @@
-import { theme } from '@/src/theme';
+import { theme } from '@/theme/index';
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        padding: 35
+        padding: 35,
     },
     title:{
         fontSize: 24,
@@ -19,6 +19,11 @@ const styles = StyleSheet.create({
         color: theme.colors.gray_400,
         marginTop: 12,
         marginBottom: 38
+    },
+    containerIngredients:{
+        flexWrap: 'wrap',
+        flexDirection: 'row',
+        alignItems: 'center',
     }
 })
 
