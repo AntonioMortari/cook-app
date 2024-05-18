@@ -1,18 +1,40 @@
-import { Text, TouchableOpacity } from 'react-native';
+import { Text, TouchableOpacity, TouchableOpacityProps, View } from 'react-native'
+import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
+import { styles } from './styles'
 
-interface IButtonProps {
-    label: string;
+type Props = TouchableOpacityProps & {
+  title: string
 }
 
-const Button = ({ label }: IButtonProps) => {
-    return (
-        <>
-            <TouchableOpacity>
-                <Text>{label}</Text>
-            </TouchableOpacity>
-        </>
-    );
-}
+export function Button({ title, ...rest }: Props) {
+  const scale = useSharedValue(1);
 
-export { Button };
+  const animatedStyle = useAnimatedStyle(() => {
+    return ({
+      transform: [{ scale: withTiming(scale.value) }],
+    })
+  });
+
+  const onPressIn = () => {
+    scale.value = 0.95;
+  }
+
+  const onPressOut = () => {
+    scale.value = 1;
+  }
+
+  return (
+    <Animated.View style={animatedStyle}>
+      <TouchableOpacity
+        activeOpacity={0.7}
+        style={[styles.button]}
+        {...rest}
+        onPressIn={onPressIn}
+        onPressOut={onPressOut}
+      >
+        <Text style={[styles.text]}>{title}</Text>
+      </TouchableOpacity>
+    </Animated.View>
+  )
+}

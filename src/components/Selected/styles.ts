@@ -14,12 +14,13 @@ const styles = StyleSheet.create({
     },
     header:{
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        marginBottom: 27
     },
     textHeader:{
         color: theme.colors.white,
         fontFamily: theme.fonts.family.regular,
-        fontSize: theme.fonts.size.heading.sm
+        fontSize: theme.fonts.size.heading.xs
     }
 });
 

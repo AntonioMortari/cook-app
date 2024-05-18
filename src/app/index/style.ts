@@ -4,7 +4,8 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        padding: 35,
+        padding: 25,
+        marginTop: 25
     },
     title:{
         fontSize: 24,
@@ -24,6 +25,7 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         flexDirection: 'row',
         alignItems: 'center',
+        width: '100%'
     }
 })
 

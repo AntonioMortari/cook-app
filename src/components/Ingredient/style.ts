@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
         borderRadius: theme.borderRadius.full,
         paddingHorizontal: 16,
         height: 42,
-        width: 90,
+        width: 100,
         marginBottom: 15,
         marginRight: 6,
         alignItems: 'center',

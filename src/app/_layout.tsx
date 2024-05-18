@@ -1,5 +1,5 @@
 
-import { Slot } from 'expo-router';
+import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 
@@ -26,7 +26,7 @@ const Layout = () => {
     return (
         <>
             <StatusBar style='dark' />
-            <Slot />
+            <Stack screenOptions={{headerShown: false}} />
         </>
     )
 }
