@@ -1,11 +1,11 @@
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, ScrollView, Text, View } from 'react-native';
 import { styles } from './style'
 import { Ingredient } from '@/components/Ingredient';
 import { useEffect, useState } from 'react';
 import { Selected } from '@/components/Selected';
-import { supabase } from '@/services/supabase';
 import { services } from '@/services';
 import { Loading } from '@/components/Loading';
+import { router } from 'expo-router';
 
 
 const App = () => {
@@ -16,9 +16,23 @@ const App = () => {
     const handleToggleSelected = (value: string) => {
         if (selectedIngredients.includes(value)) {
             return setSelectedIngredients((state) => state.filter(ingredient => ingredient !== value));
-        } else {
-            setSelectedIngredients((state) => [...state, value]);
         }
+        setSelectedIngredients((state) => [...state, value]);
+    }
+
+    const onSearch = () => {
+
+        router.navigate({
+            pathname: 'recipes',
+            params: { selectedIngredients }
+        });
+    }
+
+    const clearSelectedIngredients = () => {
+        Alert.alert('Limpar', 'Tem certeza que deseja limpar tudo?', [
+            { text: 'Não', style: 'cancel' },
+            { text: 'Sim', onPress: () => setSelectedIngredients([]) },
+        ]);
     }
 
     useEffect(() => {
@@ -31,7 +45,7 @@ const App = () => {
         };
 
         getIngredients();
-    },[]);
+    }, []);
 
     return (
         <View style={styles.container}>
@@ -68,8 +82,9 @@ const App = () => {
 
             {selectedIngredients.length > 0 && (
                 <Selected
-                    selectedIngredients={selectedIngredients}
-                    setSelectedIngredients={setSelectedIngredients}
+                    quantity={selectedIngredients.length}
+                    onSearch={onSearch}
+                    clearSelectedIngredients={clearSelectedIngredients}
                 />
             )}
         </View>
