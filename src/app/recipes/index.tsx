@@ -6,11 +6,12 @@ import { styles } from './styles';
 import { useEffect, useState } from 'react';
 import { services } from '@/services';
 import { Ingredient } from '@/components/Ingredient';
+import { IIngredient } from '@/@types/ingredients';
 
 
 const Recipes = () => {
     const { selectedIngredients } = useLocalSearchParams();
-    const [ingredients, setIngredients] = useState<IngredientsResponse[]>([]);
+    const [ingredients, setIngredients] = useState<IIngredient[]>([]);
 
     useEffect(() => {
         const getIngredients = async () => {

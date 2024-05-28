@@ -1,3 +1,4 @@
+import { IIngredient } from '@/@types/ingredients';
 import { supabase } from './supabase';
 
 
@@ -6,7 +7,7 @@ export const getAll = async () => {
         .from('ingredients')
         .select()
         .order('name')
-        .returns<IngredientsResponse[]>();
+        .returns<IIngredient[]>();
 
     return data || [];
 }

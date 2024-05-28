@@ -6,11 +6,12 @@ import { Selected } from '@/components/Selected';
 import { services } from '@/services';
 import { Loading } from '@/components/Loading';
 import { router } from 'expo-router';
+import { IIngredient } from '@/@types/ingredients';
 
 
 const App = () => {
     const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
-    const [ingredients, setIngredients] = useState<IngredientsResponse[]>([]);
+    const [ingredients, setIngredients] = useState<IIngredient[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const handleToggleSelected = (value: string) => {
