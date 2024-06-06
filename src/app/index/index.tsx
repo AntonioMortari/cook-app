@@ -68,11 +68,11 @@ const App = () => {
                         {ingredients.map((ingredient, index) => {
                             return (
                                 <Ingredient
-                                    onPress={() => handleToggleSelected(ingredient.name)}
+                                    onPress={() => handleToggleSelected(ingredient.id)}
                                     key={index}
                                     name={ingredient.name}
                                     image={`${services.storage.imagePath}${ingredient.image}`}
-                                    selected={selectedIngredients.includes(ingredient.name) ? true : false}
+                                    selected={selectedIngredients.includes(ingredient.id) ? true : false}
                                 />
                             )
                         })}

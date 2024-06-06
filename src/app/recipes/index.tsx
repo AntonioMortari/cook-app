@@ -7,20 +7,39 @@ import { useEffect, useState } from 'react';
 import { services } from '@/services';
 import { Ingredient } from '@/components/Ingredient';
 import { IIngredient } from '@/@types/ingredients';
+import { IRecipes } from '@/@types/recipes';
+import { getRecipesByIngredients } from '@/services/recipesService';
+import {findByIds} from '@/services/ingredientsService';
+import { Recipe } from '@/components/Recipe';
 
 
 const Recipes = () => {
-    const { selectedIngredients } = useLocalSearchParams();
+    const { selectedIngredients } = useLocalSearchParams<{ selectedIngredients: string[] }>();
     const [ingredients, setIngredients] = useState<IIngredient[]>([]);
+    const [recipes, setRecipes] = useState<IRecipes[]>([]);
 
     useEffect(() => {
-        const getIngredients = async () => {
-            const data = await services.ingredients.getAll();
+        console.log(selectedIngredients)
 
-            setIngredients(data);
-        };
+        const getRecipes = async () => {
+            const result = await getRecipesByIngredients(selectedIngredients);
 
-        getIngredients();
+            if (result) {
+                setRecipes(result);
+            }
+
+        }
+
+        const getSelectedIngredients = async() => {
+            const result = await findByIds(selectedIngredients);
+
+            if(result) setIngredients(result);
+        }
+
+        getRecipes();
+
+        getSelectedIngredients();
+
     }, []);
 
     return (
@@ -39,7 +58,7 @@ const Recipes = () => {
                     showsHorizontalScrollIndicator={false}
                 >
                     {ingredients.map((ingredient, index) => {
-                        if (selectedIngredients.includes(ingredient.name)) {
+                        if (selectedIngredients.includes(ingredient.id)) {
                             return (
                                 <Ingredient
                                     key={index}
@@ -50,6 +69,15 @@ const Recipes = () => {
                         }
                     })}
                 </ScrollView>
+
+                {recipes.map(recipe => (
+                    <Recipe
+                        name={recipe.name}
+                        image={recipe.image}
+                        minutes={recipe.minutes}
+                        key={recipe.id}
+                    />
+                ))}
             </View>
         </View>
     )

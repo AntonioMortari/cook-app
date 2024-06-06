@@ -11,3 +11,14 @@ export const getAll = async () => {
 
     return data || [];
 }
+
+export const findByIds = async(ids: string[]) => {
+    const { data} = await supabase
+        .from('ingredients')
+        .select()
+        .in('id', ids)
+        .order('name')
+        .returns<IIngredient[]>()
+
+        return data
+}
