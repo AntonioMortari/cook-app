@@ -9,20 +9,24 @@ import { Ingredient } from '@/components/Ingredient';
 import { IIngredient } from '@/@types/ingredients';
 import { IRecipes } from '@/@types/recipes';
 import { getRecipesByIngredients } from '@/services/recipesService';
-import {findByIds} from '@/services/ingredientsService';
+import { findByIds } from '@/services/ingredientsService';
 import { Recipe } from '@/components/Recipe';
 
 
 const Recipes = () => {
-    const { selectedIngredients } = useLocalSearchParams<{ selectedIngredients: string[] }>();
     const [ingredients, setIngredients] = useState<IIngredient[]>([]);
     const [recipes, setRecipes] = useState<IRecipes[]>([]);
 
+    const params = useLocalSearchParams<{ selectedIngredients: string }>();
+    const ingredientsIds = params.selectedIngredients.split(",");
+
+
     useEffect(() => {
-        console.log(selectedIngredients)
+
 
         const getRecipes = async () => {
-            const result = await getRecipesByIngredients(selectedIngredients);
+            const result = await getRecipesByIngredients(ingredientsIds);
+            console.log(result);
 
             if (result) {
                 setRecipes(result);
@@ -30,10 +34,10 @@ const Recipes = () => {
 
         }
 
-        const getSelectedIngredients = async() => {
-            const result = await findByIds(selectedIngredients);
+        const getSelectedIngredients = async () => {
+            const result = await findByIds(ingredientsIds);
 
-            if(result) setIngredients(result);
+            if (result) setIngredients(result);
         }
 
         getRecipes();
@@ -58,15 +62,13 @@ const Recipes = () => {
                     showsHorizontalScrollIndicator={false}
                 >
                     {ingredients.map((ingredient, index) => {
-                        if (selectedIngredients.includes(ingredient.id)) {
-                            return (
-                                <Ingredient
-                                    key={index}
-                                    name={ingredient.name}
-                                    image={`${services.storage.imagePath}${ingredient.image}`}
-                                />
-                            )
-                        }
+                        return (
+                            <Ingredient
+                                key={index}
+                                name={ingredient.name}
+                                image={`${services.storage.imagePath}${ingredient.image}`}
+                            />
+                        )
                     })}
                 </ScrollView>
 
