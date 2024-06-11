@@ -17,6 +17,7 @@ const Recipe = ({
     return (
         <TouchableOpacity
             {...rest}
+            style={styles.container}
         >
 
             <ImageBackground
@@ -27,7 +28,7 @@ const Recipe = ({
 
                     <Text style={styles.name} numberOfLines={1} lineBreakMode='tail'>{name}</Text>
 
-                    <Text style={styles.minutes}  numberOfLines={1} lineBreakMode='tail'>{minutes}</Text>
+                    <Text style={styles.minutes}  numberOfLines={1} lineBreakMode='tail'>{minutes} Minutos</Text>
 
                 </LinearGradient>
             </ImageBackground>

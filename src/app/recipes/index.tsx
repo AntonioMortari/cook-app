@@ -8,8 +8,6 @@ import { services } from '@/services';
 import { Ingredient } from '@/components/Ingredient';
 import { IIngredient } from '@/@types/ingredients';
 import { IRecipes } from '@/@types/recipes';
-import { getRecipesByIngredients } from '@/services/recipesService';
-import { findByIds } from '@/services/ingredientsService';
 import { Recipe } from '@/components/Recipe';
 
 
@@ -25,17 +23,17 @@ const Recipes = () => {
 
 
         const getRecipes = async () => {
-            const result = await getRecipesByIngredients(ingredientsIds);
+            const result = await services.recipes.getRecipesByIngredients(ingredientsIds);
+
             console.log(result);
 
             if (result) {
                 setRecipes(result);
             }
-
         }
 
         const getSelectedIngredients = async () => {
-            const result = await findByIds(ingredientsIds);
+            const result = await services.ingredients.findByIds(ingredientsIds);
 
             if (result) setIngredients(result);
         }
@@ -72,14 +70,17 @@ const Recipes = () => {
                     })}
                 </ScrollView>
 
-                {recipes.map(recipe => (
-                    <Recipe
-                        name={recipe.name}
-                        image={recipe.image}
-                        minutes={recipe.minutes}
-                        key={recipe.id}
-                    />
-                ))}
+                <ScrollView>
+                    {recipes.map(recipe => (
+                        <Recipe
+                            name={recipe.name}
+                            image={recipe.image}
+                            minutes={recipe.minutes}
+                            key={recipe.id}
+                            onPress={() => router.navigate(`recipes/${recipe.id}`)}
+                        />
+                    ))}
+                </ScrollView>
             </View>
         </View>
     )

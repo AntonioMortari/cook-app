@@ -7,7 +7,8 @@ const styles = StyleSheet.create({
         flex: 1,
         height: 192,
         borderRadius: theme.borderRadius.lg,
-        overflow: 'hidden'
+        overflow: 'hidden',
+        marginTop: 20
     },
     image:{
         flex: 1
