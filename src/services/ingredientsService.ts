@@ -22,3 +22,13 @@ export const findByIds = async(ids: string[]) => {
 
         return data
 }
+
+export const findByRecipeId = async(id: string) => {
+    const { data } = await supabase
+      .from("recipes_ingredients")
+      .select("ingredients (id, name, image)")
+      .eq("recipe_id", id)
+      .returns<{ ingredients: IIngredient }[]>()
+  
+    return data ? data.map((item) => item.ingredients) : []
+  }

@@ -2,13 +2,14 @@ import { IPreparation } from '@/@types/preparations';
 import { supabase } from './supabase';
 
 
-export const getById = async(id: string) => {
-    const {data, error } = await supabase
-        .from('preparations')
+async function findByRecipeId(id: string) {
+    const { data } = await supabase
+        .from("preparations")
         .select()
-        .eq('id', id)
-        .returns<IPreparation>()
+        .eq("recipe_id", id)
+        .returns<IPreparation[]>();
 
-    return data;
-        
+    return data || [];
 }
+
+export { findByRecipeId }

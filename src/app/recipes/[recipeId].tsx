@@ -1,33 +1,84 @@
-import { IRecipes } from '@/@types/recipes';
-import { services } from '@/services';
-import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { FlatList, Image, Text, View, ScrollView } from 'react-native';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { Redirect, router, useLocalSearchParams } from 'expo-router';
+
+import { services } from '@/services';
+
+import { styles } from './recipeIdStyles';
+import { Step } from '@/components/Step';
+import { Loading } from '@/components/Loading';
+import { Ingredients } from '@/components/Ingredients';
+import { IRecipes } from '@/@types/recipes';
+import { IIngredient } from '@/@types/ingredients';
+import { IPreparation } from '@/@types/preparations';
 
 
-const DetailsRecipe = () => {
-    const {recipeId} = useLocalSearchParams<{recipeId: string}>();
-    const [recipeData, setRecipeData] = useState<IRecipes>();
+export default function Recipes() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [recipe, setRecipe] = useState<IRecipes | null>(null);
+  const [ingredients, setIngredients] = useState<IIngredient[]>([]);
+  const [preparations, setPreparations] = useState<IPreparation[]>([]);
 
-    useEffect(() => {
-        
-        const getPreparation = async() => {
-            const result = await services.preparations.getById(recipeId);
+  const { recipeId } = useLocalSearchParams<{ recipeId: string }>();
 
-            console.log(result);
-        }
+  useEffect(() => {
+    services.recipes
+      .show(recipeId)
+      .then((response) => setRecipe(response))
+      .finally(() => setIsLoading(false));
+  }, []);
 
-        getPreparation();
+  useEffect(() => {
+    services.ingredients
+      .findByRecipeId(recipeId)
+      .then((response) => {
+        if(response) setIngredients(response)
+      });
+  }, []); 
 
-    }, []);
+  useEffect(() => {
+    services.preparations
+      .findByRecipeId(recipeId)
+      .then((response) => setPreparations(response));
+  }, []);
 
-    return(
-        <>
-            <View>
+  if (isLoading) {
+    return <Loading />;
+  }
 
-            </View>
-        </>
-    )
+  if (!recipeId || !recipe) {
+    return <Redirect href="/" />;
+  }
+
+  return (
+    <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
+      <Image source={{ uri: recipe.image }} style={styles.image} />
+
+      <View style={styles.body}>
+        <View style={styles.header}>
+          <MaterialIcons
+            size={32}
+            name="arrow-back"
+            onPress={() => router.back()}
+          />
+
+          <Text style={styles.name}>{recipe.name}</Text>
+          <Text style={styles.time}>{recipe.minutes} minutos de preparo</Text>
+        </View>
+
+        <Ingredients ingredients={ingredients} />
+
+        <View style={styles.content}>
+          <Text style={styles.preparation}>Modo de preparado</Text>
+
+          <ScrollView showsVerticalScrollIndicator={false} style={{gap: 16}}>
+                {preparations.map(preparation => (
+                    <Step step={preparation.step} description={preparation.description} key={preparation.id} />
+                ))}
+          </ScrollView>
+        </View>
+      </View>
+    </ScrollView>
+  );
 }
-
-export default DetailsRecipe;
